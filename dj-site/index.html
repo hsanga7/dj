@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">DJ Astro — DC/MD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A0A; --bg-2: #050505; --ink: #F2F0EC; --ink-soft: #A8A4A0;
+    --line: #1E1C1C; --magenta: #FF2A9D; --cyan: #4CE0E8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+  .container { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+  a { color: inherit; }
+  .neon-text { background: linear-gradient(90deg, var(--magenta), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(10,10,10,0.85); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  .topbar-inner { max-width: 980px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.02em; }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-links a { text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--ink-soft); }
+  .nav-links a:hover { color: var(--ink); }
+
+  .hero { position: relative; display: grid; grid-template-columns: 1.1fr 1fr; min-height: 560px; overflow: hidden; background: linear-gradient(160deg, #14061F 0%, #0A0A0A 70%); }
+  .hero-text { padding: 64px 40px; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 3; }
+  .grid-floor { position: absolute; bottom: -15%; left: -15%; width: 100%; height: 65%; background-image: linear-gradient(rgba(255,42,157,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(255,42,157,0.22) 1px, transparent 1px); background-size: 36px 22px; transform: perspective(220px) rotateX(55deg); transform-origin: bottom left; z-index: 1; }
+  .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: var(--magenta); margin-bottom: 18px; position: relative; z-index: 2; }
+  .hero-text h1 { font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: clamp(44px, 7vw, 68px); line-height: 0.92; margin-bottom: 20px; position: relative; z-index: 2; text-shadow: 0 0 40px rgba(255,42,157,0.28); }
+  .hero-sub { font-size: 15px; color: var(--ink-soft); max-width: 380px; margin-bottom: 26px; position: relative; z-index: 2; }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; position: relative; z-index: 2; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; padding: 12px 22px; border-radius: 4px; text-decoration: none; }
+  .btn-primary { background: linear-gradient(90deg, var(--magenta), var(--cyan)); color: #0A0A0A; font-weight: 500; }
+  .btn-secondary { border: 1px solid #3a3838; color: var(--ink); }
+  .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+
+  .hero-photo { position: relative; overflow: hidden; }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.78) contrast(1.08) sepia(0.18) hue-rotate(255deg) brightness(0.92); }
+  .photo-fade { position: absolute; inset: 0; background: linear-gradient(90deg, #14061F 0%, rgba(20,6,31,0) 42%); }
+
+  .genres { padding: 44px 0; background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .genre-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .genre-tag { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.05em; padding: 7px 16px; border-radius: 20px; border: 1px solid #2a2828; color: var(--ink-soft); }
+
+  section.block { padding: 64px 0; }
+  .kicker { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.12em; color: var(--ink-soft); margin-bottom: 18px; }
+
+  .bio-text { font-size: 19px; max-width: 640px; line-height: 1.7; color: #d8d5d1; }
+
+  .dates-list { display: flex; flex-direction: column; }
+  .date-row { display: grid; grid-template-columns: 100px 1fr auto; align-items: center; gap: 16px; padding: 18px 0; border-top: 1px solid var(--line); }
+  .date-row:first-child { border-top: none; }
+  .date-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ink-soft); }
+  .date-venue { font-family: 'Unbounded', sans-serif; font-weight: 500; font-size: 15px; }
+  .date-city { font-size: 12.5px; color: var(--ink-soft); margin-top: 3px; }
+  .date-tag { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--cyan); border: 1px solid #23504f; padding: 5px 11px; border-radius: 20px; white-space: nowrap; }
+  .dates-empty { font-size: 14px; color: var(--ink-soft); font-style: italic; padding: 20px 0; }
+
+  .gallery-teaser { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 8px; }
+  .gallery-teaser a { display: block; aspect-ratio: 4/5; border-radius: 6px; overflow: hidden; position: relative; }
+  .gallery-teaser img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.85) contrast(1.05); transition: transform 0.3s ease; }
+  .gallery-teaser a:hover img { transform: scale(1.04); }
+  .gallery-more { display: flex; align-items: center; justify-content: center; background: var(--bg-2); border: 1px dashed #2a2828; color: var(--ink-soft); font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-align: center; }
+
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .contact-heading { font-family: 'Unbounded', sans-serif; font-size: 26px; font-weight: 700; max-width: 340px; line-height: 1.2; }
+  .contact-links { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
+  .contact-links a { text-decoration: none; display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: var(--ink-soft); }
+  .contact-links a:hover { color: var(--cyan); }
+  .form-note { font-size: 12px; color: var(--ink-soft); margin-top: 10px; }
+  .gform-card { background: #fff; border-radius: 8px; overflow: hidden; max-height: 500px; overflow-y: auto; }
+  .gform-card iframe { display: block; }
+
+  footer { padding: 40px 0 60px; border-top: 1px solid var(--line); text-align: center; }
+  footer p { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); }
+
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-photo { height: 320px; order: -1; }
+    .hero-text { padding: 40px 24px; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .gallery-teaser { grid-template-columns: repeat(2, 1fr); }
+    .date-row { grid-template-columns: 60px 1fr; }
+    .date-tag { grid-column: 2; justify-self: start; margin-top: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<!--
+  ============================================================
+  EDIT EVERYTHING HERE. This is the only place you should need
+  to touch to change any text, links, dates, or genres on the
+  page. Nothing below this block should need editing.
+  ============================================================
+-->
+<script>
+  const CONTENT = {
+    pageTitle: "DJ Astro — DC/MD",
+    brand: "DJ ASTRO",
+
+    nav: { dates: "Dates", gallery: "Gallery", contact: "Contact" },
+
+    hero: {
+      eyebrow: "DC / MD — BOOKINGS OPEN",
+      headline: "DJ ASTRO",
+      sub: "DC/MD's resident vibe-setter — Amapiano to Dancehall and everywhere between, built to keep the room moving.",
+      bookBtnLabel: "Book Astro",
+      galleryBtnLabel: "View gallery",
+      photo: "assets/astro-hero.jpg"
+    },
+
+    genres: ["AMAPIANO", "HOUSE", "AFROBEATS", "BONGO FLAVA", "DANCEHALL", "SOCA", "GENGE", "URBANTONE"],
+
+    bio: {
+      kicker: "ABOUT",
+      text: "DJ Astro is DC/MD's resident vibe-setter — a groovist moving between Amapiano, Afrobeats, Dancehall, Soca, Genge, House, Bongo Flava, and Urbantone until the whole room is in motion. Every set is built to build energy, not just play music."
+    },
+
+    // Add a gig any time — date, venue, city, and a tag like "Tickets", "RSVP", or "Sold out".
+    // Leave the list empty ( [] ) to show the "new dates dropping soon" message instead.
+    dates: {
+      kicker: "UPCOMING DATES",
+      emptyMessage: "New dates dropping soon — check back or follow on Instagram.",
+      list: [
+        // { date: "09.12", venue: "Flash", city: "Washington, DC", tag: "Tickets" },
+        // { date: "09.27", venue: "Sub Rosa", city: "Baltimore, MD", tag: "RSVP" },
+      ]
+    },
+
+    galleryTeaser: {
+      kicker: "FROM THE BOOTH",
+      previewImage: "assets/astro-hero.jpg",
+      morePhotosLabel: "+ more photos",
+      viewGalleryLabel: "view full gallery →"
+    },
+
+    contact: {
+      kicker: "BOOK / GET IN TOUCH",
+      heading: "Let's put Astro on your lineup.",
+      email: "booking@djastro.com",
+      phone: "Add your phone number",
+      phoneHref: "0000000000",
+      instagramUrl: "#",
+      instagramLabel: "Instagram — add your @",
+      tiktokUrl: "#",
+      tiktokLabel: "TikTok — add your @",
+      googleFormEmbedUrl: "https://docs.google.com/forms/d/e/1FAIpQLScdZ-NoKV4HaSZsHsaIPs63mTbhQen1yV0PPXKHb-RgtOHs0g/viewform?embedded=true",
+      googleFormLink: "https://forms.gle/K6JGm9FWP1tkidq9A"
+    },
+
+    footerText: "DJ ASTRO — DC / MD"
+  };
+</script>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand" id="brand"></div>
+    <nav class="nav-links" id="nav-links"></nav>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-text">
+    <div class="grid-floor"></div>
+    <div class="eyebrow" id="hero-eyebrow"></div>
+    <h1 class="neon-text" id="hero-headline"></h1>
+    <p class="hero-sub" id="hero-sub"></p>
+    <div class="hero-actions" id="hero-actions"></div>
+  </div>
+  <div class="hero-photo">
+    <img id="hero-photo-img" src="" alt="DJ Astro wearing headphones">
+    <div class="photo-fade"></div>
+  </div>
+</section>
+
+<div class="genres">
+  <div class="container">
+    <div class="genre-row" id="genre-row"></div>
+  </div>
+</div>
+
+<section class="block" id="bio">
+  <div class="container">
+    <div class="kicker" id="bio-kicker"></div>
+    <p class="bio-text" id="bio-text"></p>
+  </div>
+</section>
+
+<section class="block" id="dates" style="background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+  <div class="container">
+    <div class="kicker" id="dates-kicker"></div>
+    <div class="dates-list" id="dates-list"></div>
+  </div>
+</section>
+
+<section class="block" id="gallery-teaser">
+  <div class="container">
+    <div class="kicker" id="gallery-kicker"></div>
+    <div class="gallery-teaser" id="gallery-teaser-grid"></div>
+  </div>
+</section>
+
+<section class="block" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <div class="kicker" id="contact-kicker"></div>
+        <h2 class="contact-heading" id="contact-heading"></h2>
+        <div class="contact-links" id="contact-links"></div>
+      </div>
+      <div>
+        <div class="gform-card">
+          <iframe id="gform-iframe" src="" width="100%" height="820" frameborder="0" marginheight="0" marginwidth="0" title="Booking form">Loading…</iframe>
+        </div>
+        <p class="form-note">Having trouble with the embedded form? <a id="gform-fallback-link" href="#" target="_blank" rel="noopener" style="color: var(--cyan);">Open it in a new tab</a> instead.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><p id="footer-text"></p></footer>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  document.title = CONTENT.pageTitle;
+  $('brand').textContent = CONTENT.brand;
+  $('nav-links').innerHTML = `
+    <a href="#dates">${CONTENT.nav.dates}</a>
+    <a href="gallery/index.html">${CONTENT.nav.gallery}</a>
+    <a href="#contact">${CONTENT.nav.contact}</a>
+  `;
+
+  $('hero-eyebrow').textContent = CONTENT.hero.eyebrow;
+  $('hero-headline').textContent = CONTENT.hero.headline;
+  $('hero-sub').textContent = CONTENT.hero.sub;
+  $('hero-actions').innerHTML = `
+    <a class="btn btn-primary" href="#contact">${CONTENT.hero.bookBtnLabel}</a>
+    <a class="btn btn-secondary" href="gallery/index.html">${CONTENT.hero.galleryBtnLabel}</a>
+  `;
+  $('hero-photo-img').src = CONTENT.hero.photo;
+
+  $('genre-row').innerHTML = CONTENT.genres.map(g => `<span class="genre-tag">${g}</span>`).join('');
+
+  $('bio-kicker').textContent = CONTENT.bio.kicker;
+  $('bio-text').textContent = CONTENT.bio.text;
+
+  $('dates-kicker').textContent = CONTENT.dates.kicker;
+  const dl = $('dates-list');
+  if (CONTENT.dates.list.length === 0) {
+    dl.innerHTML = `<p class="dates-empty">${CONTENT.dates.emptyMessage}</p>`;
+  } else {
+    dl.innerHTML = CONTENT.dates.list.map(d => `
+      <div class="date-row">
+        <div class="date-num">${d.date}</div>
+        <div><div class="date-venue">${d.venue}</div><div class="date-city">${d.city}</div></div>
+        <div class="date-tag">${d.tag}</div>
+      </div>
+    `).join('');
+  }
+
+  $('gallery-kicker').textContent = CONTENT.galleryTeaser.kicker;
+  $('gallery-teaser-grid').innerHTML = `
+    <a href="gallery/index.html"><img src="${CONTENT.galleryTeaser.previewImage}" alt=""></a>
+    <a class="gallery-more" href="gallery/index.html">${CONTENT.galleryTeaser.morePhotosLabel}</a>
+    <a class="gallery-more" href="gallery/index.html">${CONTENT.galleryTeaser.viewGalleryLabel}</a>
+  `;
+
+  $('contact-kicker').textContent = CONTENT.contact.kicker;
+  $('contact-heading').textContent = CONTENT.contact.heading;
+  $('contact-links').innerHTML = `
+    <a href="mailto:${CONTENT.contact.email}">✉ ${CONTENT.contact.email}</a>
+    <a href="tel:${CONTENT.contact.phoneHref}">☎ ${CONTENT.contact.phone}</a>
+    <a href="${CONTENT.contact.instagramUrl}" target="_blank" rel="noopener">◎ ${CONTENT.contact.instagramLabel}</a>
+    <a href="${CONTENT.contact.tiktokUrl}" target="_blank" rel="noopener">▸ ${CONTENT.contact.tiktokLabel}</a>
+  `;
+  $('gform-iframe').src = CONTENT.contact.googleFormEmbedUrl;
+  $('gform-fallback-link').href = CONTENT.contact.googleFormLink;
+
+  $('footer-text').textContent = CONTENT.footerText;
+</script>
+
+</body>
+</html>
