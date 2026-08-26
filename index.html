@@ -367,11 +367,11 @@
   $('contact-kicker').textContent = CONTENT.contact.kicker;
   $('contact-heading').textContent = CONTENT.contact.heading;
   $('contact-links').innerHTML = `
-    <a href="mailto:${CONTENT.contact.email}">✉ ${CONTENT.contact.email}</a>
-    <a href="tel:${CONTENT.contact.phoneHref}">☎ ${CONTENT.contact.phone}</a>
-    <a href="${CONTENT.contact.instagramUrl}" target="_blank" rel="noopener">◎ ${CONTENT.contact.instagramLabel}</a>
-    <a href="${CONTENT.contact.tiktokUrl}" target="_blank" rel="noopener">▸ ${CONTENT.contact.tiktokLabel}</a>
-  `;
+  <a href="mailto:${CONTENT.contact.email}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>${CONTENT.contact.email}</a>
+  <a href="tel:${CONTENT.contact.phoneHref}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.2 2.2z"/></svg>${CONTENT.contact.phone}</a>
+  <a href="${CONTENT.contact.instagramUrl}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>${CONTENT.contact.instagramLabel}</a>
+  <a href="${CONTENT.contact.tiktokUrl}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 3c.4 2.2 1.9 3.7 4.2 4v2.7c-1.5 0-2.9-.4-4.2-1.3v6.5a5.1 5.1 0 1 1-4.4-5v2.7a2.4 2.4 0 1 0 1.9 2.3V3H14z"/></svg>${CONTENT.contact.tiktokLabel}</a>
+`;
   $('gform-iframe').src = CONTENT.contact.googleFormEmbedUrl;
   $('gform-fallback-link').href = CONTENT.contact.googleFormLink;
 
