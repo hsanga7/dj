@@ -38,7 +38,8 @@
   .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
 
   .hero-photo { position: relative; overflow: hidden; }
-  .hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.78) contrast(1.08) sepia(0.18) hue-rotate(255deg) brightness(0.92); }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: contrast(1.04) brightness(0.98); }
+  .photo-tint { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(255,42,157,0.4), rgba(76,224,232,0.22)); mix-blend-mode: color; pointer-events: none; }
   .photo-fade { position: absolute; inset: 0; background: linear-gradient(90deg, #14061F 0%, rgba(20,6,31,0) 42%); }
 
   .genres { padding: 44px 0; background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
@@ -48,7 +49,11 @@
   section.block { padding: 64px 0; }
   .kicker { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.12em; color: var(--ink-soft); margin-bottom: 18px; }
 
-  .bio-text { font-size: 19px; max-width: 640px; line-height: 1.7; color: #d8d5d1; }
+  .overview-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 52px; }
+  .overview-left { display: flex; flex-direction: column; gap: 48px; justify-content: center; }
+  .overview-right { display: flex; flex-direction: column; }
+
+  .bio-text { font-size: 17px; max-width: 460px; line-height: 1.7; color: #d8d5d1; }
 
   .dates-list { display: flex; flex-direction: column; }
   .date-row { display: grid; grid-template-columns: 100px 1fr auto; align-items: center; gap: 16px; padding: 18px 0; border-top: 1px solid var(--line); }
@@ -59,7 +64,7 @@
   .date-tag { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--cyan); border: 1px solid #23504f; padding: 5px 11px; border-radius: 20px; white-space: nowrap; }
   .dates-empty { font-size: 14px; color: var(--ink-soft); font-style: italic; padding: 20px 0; }
 
-  .gallery-slideshow { position: relative; aspect-ratio: 16/8; border-radius: 8px; overflow: hidden; background: var(--bg-2); margin-top: 8px; }
+  .gallery-slideshow { position: relative; flex: 1; min-height: 260px; border-radius: 8px; overflow: hidden; background: var(--bg-2); margin-top: 8px; }
   .gallery-slideshow img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.1s ease; filter: saturate(0.85) contrast(1.05); }
   .gallery-slideshow img.active { opacity: 1; }
   .slideshow-dots { display: flex; gap: 8px; justify-content: center; margin-top: 14px; }
@@ -103,6 +108,8 @@
     .contact-grid { grid-template-columns: 1fr; }
     .date-row { grid-template-columns: 60px 1fr; }
     .date-tag { grid-column: 2; justify-self: start; margin-top: 6px; }
+    .overview-grid { grid-template-columns: 1fr; gap: 44px; }
+    .gallery-slideshow { aspect-ratio: 4/3; min-height: 0; }
   }
 </style>
 </head>
@@ -176,7 +183,7 @@
       ]
     },
 
-        contact: {
+    contact: {
       kicker: "BOOK / GET IN TOUCH",
       heading: "Let's put Astro on your lineup.",
       email: "bookingsdjastro@gmail.com",
@@ -211,6 +218,7 @@
   </div>
   <div class="hero-photo">
     <img id="hero-photo-img" src="" alt="DJ Astro wearing headphones">
+    <div class="photo-tint"></div>
     <div class="photo-fade"></div>
   </div>
 </section>
@@ -221,26 +229,26 @@
   </div>
 </div>
 
-<section class="block" id="bio">
+<section class="block" id="overview">
   <div class="container">
-    <div class="kicker" id="bio-kicker"></div>
-    <p class="bio-text" id="bio-text"></p>
-  </div>
-</section>
-
-<section class="block" id="dates" style="background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
-  <div class="container">
-    <div class="kicker" id="dates-kicker"></div>
-    <div class="dates-list" id="dates-list"></div>
-  </div>
-</section>
-
-<section class="block" id="gallery-teaser">
-  <div class="container">
-    <div class="kicker" id="gallery-kicker"></div>
-    <div class="gallery-slideshow" id="gallery-slideshow"></div>
-    <div class="slideshow-dots" id="slideshow-dots"></div>
-    <a class="gallery-cta" id="gallery-cta" href="gallery/index.html"></a>
+    <div class="overview-grid">
+      <div class="overview-left">
+        <div>
+          <div class="kicker" id="bio-kicker"></div>
+          <p class="bio-text" id="bio-text"></p>
+        </div>
+        <div>
+          <div class="kicker" id="dates-kicker"></div>
+          <div class="dates-list" id="dates-list"></div>
+        </div>
+      </div>
+      <div class="overview-right">
+        <div class="kicker" id="gallery-kicker"></div>
+        <div class="gallery-slideshow" id="gallery-slideshow"></div>
+        <div class="slideshow-dots" id="slideshow-dots"></div>
+        <a class="gallery-cta" id="gallery-cta" href="gallery/index.html"></a>
+      </div>
+    </div>
   </div>
 </section>
 
