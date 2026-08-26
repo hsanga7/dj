@@ -10,6 +10,9 @@
   :root {
     --bg: #0A0A0A; --bg-2: #050505; --ink: #F2F0EC; --ink-soft: #A8A4A0;
     --line: #1E1C1C; --magenta: #FF2A9D; --cyan: #4CE0E8;
+    /* Adjust this to reframe the hero photo's crop.
+       First value = horizontal (0%=left edge, 50%=center, 100%=right edge)
+       Second value = vertical (0%=top edge, 50%=center, 100%=bottom edge) */
     --hero-photo-position: 50% 15%;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,7 +29,10 @@
   .nav-links a { text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--ink-soft); }
   .nav-links a:hover { color: var(--ink); }
 
-  .hero { position: relative; display: grid; grid-template-columns: 1.1fr 1fr; min-height: 560px; overflow: hidden; background: linear-gradient(160deg, #14061F 0%, #0A0A0A 70%); }
+  .hero { position: relative; display: grid; grid-template-columns: 1.1fr 1fr; height: clamp(420px, 78vh, 640px); overflow: hidden; background: linear-gradient(160deg, #14061F 0%, #0A0A0A 70%); }
+  .scroll-cue { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 4; opacity: 0.7; animation: scroll-bounce 2s ease-in-out infinite; transition: opacity 0.3s ease; }
+  .scroll-cue svg { width: 22px; height: 22px; stroke: var(--ink); }
+  @keyframes scroll-bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(7px); } }
   .hero-text { padding: 64px 40px; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 3; }
   .grid-floor { position: absolute; bottom: -15%; left: -15%; width: 100%; height: 65%; background-image: linear-gradient(rgba(255,42,157,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(255,42,157,0.22) 1px, transparent 1px); background-size: 36px 22px; transform: perspective(220px) rotateX(55deg); transform-origin: bottom left; z-index: 1; }
   .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: var(--magenta); margin-bottom: 18px; position: relative; z-index: 2; }
@@ -39,9 +45,10 @@
   .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
 
   .hero-photo { position: relative; overflow: hidden; }
-.hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: var(--hero-photo-position); display: block; filter: contrast(1.04) brightness(0.98); }
-.photo-tint { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(255,42,157,0.4), rgba(76,224,232,0.22)); mix-blend-mode: color; pointer-events: none; }
-.photo-fade { position: absolute; inset: 0; background: linear-gradient(90deg, #14061F 0%, rgba(20,6,31,0) 42%); }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: var(--hero-photo-position); display: block; filter: contrast(1.04) brightness(0.98); }
+  .photo-tint { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(255,42,157,0.4), rgba(76,224,232,0.22)); mix-blend-mode: color; pointer-events: none; }
+  .photo-fade { position: absolute; inset: 0; background: linear-gradient(90deg, #14061F 0%, rgba(20,6,31,0) 42%); }
+
   .genres { padding: 44px 0; background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .genre-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
   .genre-tag { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.05em; padding: 7px 16px; border-radius: 20px; border: 1px solid #2a2828; color: var(--ink-soft); }
@@ -93,8 +100,8 @@
   .contact-heading { font-family: 'Unbounded', sans-serif; font-size: 26px; font-weight: 700; max-width: 340px; line-height: 1.2; }
   .contact-links { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
   .contact-links a { text-decoration: none; display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: var(--ink-soft); }
-  .contact-links a:hover { color: var(--cyan); }
   .contact-links svg { width: 1.05em; height: 1.05em; flex-shrink: 0; }
+  .contact-links a:hover { color: var(--cyan); }
   .form-note { font-size: 12px; color: var(--ink-soft); margin-top: 10px; }
   .gform-card { background: #fff; border-radius: 8px; overflow: hidden; max-height: 500px; overflow-y: auto; }
   .gform-card iframe { display: block; }
@@ -162,14 +169,14 @@
     // simply displays as a static frame (nothing breaks).
     galleryTeaser: {
       kicker: "FROM THE BOOTH",
-      pphotos: [
-  { src: "assets/astro-hero.jpg" },
-  { src: "assets/dancefloor.jpg" },
-  { src: "assets/get-it.jpg" },
-  { src: "assets/happy-hosts.jpg" },
-  { src: "assets/in-the-zone-two.jpg" },
-  { src: "assets/smiles-all-around.jpg" },
-],
+      photos: [
+        { src: "assets/astro-hero.jpg" },
+        { src: "assets/dancefloor.jpg" },
+        { src: "assets/get-it.jpg" },
+        { src: "assets/happy-hosts.jpg" },
+        { src: "assets/in-the-zone-two.jpg" },
+        { src: "assets/smiles-all-around.jpg" },
+      ],
       viewGalleryLabel: "View full gallery →"
     },
 
@@ -225,6 +232,9 @@
     <img id="hero-photo-img" src="" alt="DJ Astro wearing headphones">
     <div class="photo-tint"></div>
     <div class="photo-fade"></div>
+  </div>
+  <div class="scroll-cue" id="scroll-cue">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 4v16M5 13l7 7 7-7"/></svg>
   </div>
 </section>
 
@@ -371,16 +381,21 @@
 
   $('contact-kicker').textContent = CONTENT.contact.kicker;
   $('contact-heading').textContent = CONTENT.contact.heading;
-    $('contact-links').innerHTML = `
-  <a href="mailto:${CONTENT.contact.email}"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>${CONTENT.contact.email}</a>
-  <a href="tel:${CONTENT.contact.phoneHref}"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.2 2.2z"/></svg>${CONTENT.contact.phone}</a>
-  <a href="${CONTENT.contact.instagramUrl}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="1em" height="1em"><defs><linearGradient id="ig-grad" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#FEDA75"/><stop offset="25%" stop-color="#FA7E1E"/><stop offset="55%" stop-color="#D62976"/><stop offset="80%" stop-color="#962FBF"/><stop offset="100%" stop-color="#4F5BD5"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="6" fill="url(#ig-grad)"/><rect x="6.7" y="6.7" width="10.6" height="10.6" rx="3.3" fill="none" stroke="#fff" stroke-width="1.6"/><circle cx="15.6" cy="8.4" r="1.05" fill="#fff"/></svg>${CONTENT.contact.instagramLabel}</a>
-  <a href="${CONTENT.contact.tiktokUrl}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="1em" height="1em"><path transform="translate(-0.6,0.6)" fill="#25F4EE" d="M15 3.2c.5 2.3 2 3.9 4.4 4.2v2.8c-1.6 0-3.1-.4-4.4-1.3v6.7a5.3 5.3 0 1 1-4.6-5.2v2.8a2.5 2.5 0 1 0 2 2.4V3.2H15z"/><path transform="translate(0.6,-0.6)" fill="#FE2C55" d="M15 3.2c.5 2.3 2 3.9 4.4 4.2v2.8c-1.6 0-3.1-.4-4.4-1.3v6.7a5.3 5.3 0 1 1-4.6-5.2v2.8a2.5 2.5 0 1 0 2 2.4V3.2H15z"/><path fill="#000" d="M15 3.2c.5 2.3 2 3.9 4.4 4.2v2.8c-1.6 0-3.1-.4-4.4-1.3v6.7a5.3 5.3 0 1 1-4.6-5.2v2.8a2.5 2.5 0 1 0 2 2.4V3.2H15z"/></svg>${CONTENT.contact.tiktokLabel}</a>
-`;
+  $('contact-links').innerHTML = `
+    <a href="mailto:${CONTENT.contact.email}"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>${CONTENT.contact.email}</a>
+    <a href="tel:${CONTENT.contact.phoneHref}"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.2 2.2z"/></svg>${CONTENT.contact.phone}</a>
+    <a href="${CONTENT.contact.instagramUrl}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="1em" height="1em"><defs><linearGradient id="ig-grad" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#FEDA75"/><stop offset="25%" stop-color="#FA7E1E"/><stop offset="55%" stop-color="#D62976"/><stop offset="80%" stop-color="#962FBF"/><stop offset="100%" stop-color="#4F5BD5"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="6" fill="url(#ig-grad)"/><rect x="6.7" y="6.7" width="10.6" height="10.6" rx="3.3" fill="none" stroke="#fff" stroke-width="1.6"/><circle cx="15.6" cy="8.4" r="1.05" fill="#fff"/></svg>${CONTENT.contact.instagramLabel}</a>
+    <a href="${CONTENT.contact.tiktokUrl}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="1em" height="1em"><path transform="translate(-0.6,0.6)" fill="#25F4EE" d="M15 3.2c.5 2.3 2 3.9 4.4 4.2v2.8c-1.6 0-3.1-.4-4.4-1.3v6.7a5.3 5.3 0 1 1-4.6-5.2v2.8a2.5 2.5 0 1 0 2 2.4V3.2H15z"/><path transform="translate(0.6,-0.6)" fill="#FE2C55" d="M15 3.2c.5 2.3 2 3.9 4.4 4.2v2.8c-1.6 0-3.1-.4-4.4-1.3v6.7a5.3 5.3 0 1 1-4.6-5.2v2.8a2.5 2.5 0 1 0 2 2.4V3.2H15z"/><path fill="#000" d="M15 3.2c.5 2.3 2 3.9 4.4 4.2v2.8c-1.6 0-3.1-.4-4.4-1.3v6.7a5.3 5.3 0 1 1-4.6-5.2v2.8a2.5 2.5 0 1 0 2 2.4V3.2H15z"/></svg>${CONTENT.contact.tiktokLabel}</a>
+  `;
   $('gform-iframe').src = CONTENT.contact.googleFormEmbedUrl;
   $('gform-fallback-link').href = CONTENT.contact.googleFormLink;
 
   $('footer-text').textContent = CONTENT.footerText;
+
+  window.addEventListener('scroll', () => {
+    const cue = $('scroll-cue');
+    if (cue) cue.style.opacity = window.scrollY > 60 ? '0' : '0.7';
+  }, { passive: true });
 </script>
 
 </body>
