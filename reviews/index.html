@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Reviews — DJ Astro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A0A; --bg-2: #050505; --ink: #F2F0EC; --ink-soft: #A8A4A0;
+    --line: #1E1C1C; --magenta: #FF2A9D; --cyan: #4CE0E8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+  a { color: inherit; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(10,10,10,0.85); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  .topbar-inner { max-width: 900px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.02em; }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-links a { text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--ink-soft); }
+  .nav-links a:hover { color: var(--ink); }
+
+  .header { padding: 56px 0 40px; }
+  .kicker { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.12em; color: var(--magenta); margin-bottom: 14px; }
+  h1 { font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: clamp(30px, 5vw, 44px); margin-bottom: 10px; }
+  .header-sub { color: var(--ink-soft); font-size: 15px; max-width: 480px; }
+
+  .review-list { display: flex; flex-direction: column; gap: 14px; padding-bottom: 80px; }
+  .review-card {
+    background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 26px;
+  }
+  .review-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .review-quote { font-size: 16px; color: #e5e2de; line-height: 1.65; max-width: 640px; }
+  .review-quote::before { content: '“'; color: var(--cyan); }
+  .review-quote::after { content: '”'; color: var(--cyan); }
+  .review-meta { display: flex; align-items: center; gap: 10px; margin-top: 16px; }
+  .review-name { font-family: 'Unbounded', sans-serif; font-size: 13.5px; font-weight: 500; }
+  .review-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--ink-soft); }
+  .review-role { font-size: 12.5px; color: var(--ink-soft); }
+
+  .empty-note { font-size: 14px; color: var(--ink-soft); font-style: italic; padding: 20px 0; }
+
+  @media (max-width: 600px) {
+    .review-card { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!--
+  ============================================================
+  EDIT EVERYTHING HERE. Add as many reviews as you want — this
+  page has no limit, unlike the short scrolling strip on the
+  home page. Longer quotes are totally fine here.
+  ============================================================
+-->
+<script>
+  const CONTENT = {
+    pageTitle: "Reviews — DJ Astro",
+    brand: "DJ ASTRO",
+    nav: { home: "Home", gallery: "Gallery", contact: "Contact" },
+    kicker: "REVIEWS",
+    heading: "What people say after the last song plays",
+    subheading: "A few words from hosts, venues, and dancefloors DJ Astro has played for.",
+    emptyMessage: "No reviews posted yet — check back soon.",
+
+    // Add a review any time: quote (can be as long as you want), name, and role
+    // (event type, venue, or relationship — "Bride", "Event host", etc).
+    reviews: [
+      { quote: "Astro read the room perfectly all night — never a dead moment on the floor. Went from Amapiano straight into Dancehall without losing a single person.", name: "Amara O.", role: "Private event, Washington DC" },
+      { quote: "Best Amapiano set I've heard in the DMV, hands down. Already rebooked for next year's anniversary party.", name: "Jelani M.", role: "Club night, Baltimore" },
+      { quote: "Professional, on time, and the transitions between genres were seamless all night. Guests were still talking about it a week later.", name: "Priya R.", role: "Wedding reception, Silver Spring" },
+      { quote: "Had people asking for the setlist before the night was even over. Exactly the energy we wanted for the whole party.", name: "Marcus T.", role: "Birthday party, DC" }
+    ]
+  };
+</script>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand" id="brand"></div>
+    <nav class="nav-links" id="nav-links"></nav>
+  </div>
+</div>
+
+<div class="container">
+  <div class="header">
+    <div class="kicker" id="kicker"></div>
+    <h1 id="heading"></h1>
+    <p class="header-sub" id="subheading"></p>
+  </div>
+  <div class="review-list" id="review-list"></div>
+</div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  document.title = CONTENT.pageTitle;
+  $('brand').textContent = CONTENT.brand;
+  $('nav-links').innerHTML = `
+    <a href="../index.html">${CONTENT.nav.home}</a>
+    <a href="../gallery/index.html">${CONTENT.nav.gallery}</a>
+    <a href="../index.html#contact">${CONTENT.nav.contact}</a>
+  `;
+  $('kicker').textContent = CONTENT.kicker;
+  $('heading').textContent = CONTENT.heading;
+  $('subheading').textContent = CONTENT.subheading;
+
+  const list = $('review-list');
+  if (CONTENT.reviews.length === 0) {
+    list.innerHTML = `<p class="empty-note">${CONTENT.emptyMessage}</p>`;
+  } else {
+    list.innerHTML = CONTENT.reviews.map(r => `
+      <div class="review-card">
+        <div class="review-top">
+          <div class="review-quote">${r.quote}</div>
+        </div>
+        <div class="review-meta">
+          <div class="review-name">${r.name}</div>
+          <div class="review-dot"></div>
+          <div class="review-role">${r.role}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+</script>
+
+</body>
+</html>
