@@ -24,12 +24,13 @@
 
   .topbar { position: sticky; top: 0; z-index: 50; background: rgba(10,10,10,0.85); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
   .topbar-inner { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
-  .brand { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.02em; }
+  .brand { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.02em; text-decoration: none; }
   .nav-links { display: flex; gap: 24px; }
   .nav-links a { text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--ink-soft); }
   .nav-links a:hover { color: var(--ink); }
 
-  .hero { position: relative; display: grid; grid-template-columns: 1fr minmax(300px, 460px); height: clamp(420px, 78vh, 640px); overflow: hidden; background: linear-gradient(160deg, #14061F 0%, #0A0A0A 70%); }
+  .hero { position: relative; height: clamp(380px, 58vh, 520px); overflow: hidden; background: linear-gradient(160deg, #14061F 0%, #0A0A0A 70%); }
+  .hero-inner { position: relative; max-width: 1200px; margin: 0 auto; height: 100%; display: grid; grid-template-columns: 1fr minmax(300px, 460px); }
   .scroll-cue { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 4; opacity: 0.7; animation: scroll-bounce 2s ease-in-out infinite; transition: opacity 0.3s ease; }
   .scroll-cue svg { width: 22px; height: 22px; stroke: var(--ink); }
   @keyframes scroll-bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(7px); } }
@@ -72,7 +73,12 @@
   .dates-empty { font-size: 14px; color: var(--ink-soft); font-style: italic; padding: 20px 0; }
 
   .gallery-slideshow { position: relative; flex: 1; min-height: 260px; border-radius: 8px; overflow: hidden; background: var(--bg-2); margin-top: 8px; }
-  .gallery-slideshow img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.1s ease; filter: saturate(0.85) contrast(1.05); }
+  .gallery-slideshow img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 1.1s ease; filter: saturate(0.85) contrast(1.05); }
+  .slideshow-caption {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+    padding: 28px 16px 12px; background: linear-gradient(0deg, rgba(0,0,0,0.75), transparent);
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft);
+  }
   .gallery-slideshow img.active { opacity: 1; }
   .slideshow-dots { display: flex; gap: 8px; justify-content: center; margin-top: 14px; }
   .slideshow-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: #3a3838; border: none; padding: 0; cursor: pointer; }
@@ -110,7 +116,7 @@
   footer p { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); }
 
   @media (max-width: 760px) {
-    .hero { grid-template-columns: 1fr; }
+    .hero-inner { grid-template-columns: 1fr; }
     .hero-photo { height: 320px; order: -1; }
     .hero-text { padding: 40px 24px; }
     .contact-grid { grid-template-columns: 1fr; }
@@ -170,11 +176,12 @@
     galleryTeaser: {
       kicker: "FROM THE BOOTH",
       photos: [
-        { src: "assets/dancefloor.jpg" },
-        { src: "assets/get-it.jpg" },
-        { src: "assets/happy-hosts.jpg" },
-        { src: "assets/in-the-zone-two.jpg" },
-        { src: "assets/smiles-all-around.jpg" },
+        { src: "assets/astro-hero.jpg", caption: "Studio portrait" },
+        { src: "assets/dancefloor.jpg", caption: "Dancefloor" },
+        { src: "assets/get-it.jpg", caption: "Get it" },
+        { src: "assets/happy-hosts.jpg", caption: "Happy hosts" },
+        { src: "assets/in-the-zone-two.jpg", caption: "In the zone II" },
+        { src: "assets/smiles-all-around.jpg", caption: "Smiles all around" },
       ],
       viewGalleryLabel: "View full gallery →"
     },
@@ -214,23 +221,25 @@
 
 <div class="topbar">
   <div class="topbar-inner">
-    <div class="brand" id="brand"></div>
+    <a class="brand" href="index.html" id="brand"></a>
     <nav class="nav-links" id="nav-links"></nav>
   </div>
 </div>
 
 <section class="hero">
-  <div class="hero-text">
-    <div class="grid-floor"></div>
-    <div class="eyebrow" id="hero-eyebrow"></div>
-    <h1 class="neon-text" id="hero-headline"></h1>
-    <p class="hero-sub" id="hero-sub"></p>
-    <div class="hero-actions" id="hero-actions"></div>
-  </div>
-  <div class="hero-photo">
-    <img id="hero-photo-img" src="" alt="DJ Astro wearing headphones">
-    <div class="photo-tint"></div>
-    <div class="photo-fade"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="grid-floor"></div>
+      <div class="eyebrow" id="hero-eyebrow"></div>
+      <h1 class="neon-text" id="hero-headline"></h1>
+      <p class="hero-sub" id="hero-sub"></p>
+      <div class="hero-actions" id="hero-actions"></div>
+    </div>
+    <div class="hero-photo">
+      <img id="hero-photo-img" src="" alt="DJ Astro wearing headphones">
+      <div class="photo-tint"></div>
+      <div class="photo-fade"></div>
+    </div>
   </div>
   <div class="scroll-cue" id="scroll-cue">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 4v16M5 13l7 7 7-7"/></svg>
@@ -347,17 +356,20 @@
   const slides = CONTENT.galleryTeaser.photos;
   const slideshowEl = $('gallery-slideshow');
   const dotsEl = $('slideshow-dots');
-  slideshowEl.innerHTML = slides.map((p, i) => `<img src="${p.src}" alt="" class="${i === 0 ? 'active' : ''}">`).join('');
+  slideshowEl.innerHTML = slides.map((p, i) => `<img src="${p.src}" alt="${p.caption || ''}" class="${i === 0 ? 'active' : ''}">`).join('')
+    + `<div class="slideshow-caption" id="slideshow-caption">${slides[0] && slides[0].caption ? slides[0].caption : ''}</div>`;
   if (slides.length > 1) {
     dotsEl.innerHTML = slides.map((_, i) => `<button class="dot${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Show photo ${i + 1}"></button>`).join('');
   }
   let current = 0;
   const imgEls = slideshowEl.querySelectorAll('img');
   const dotEls = dotsEl.querySelectorAll('.dot');
+  const captionEl = $('slideshow-caption');
   function showSlide(i) {
     current = i;
     imgEls.forEach((el, idx) => el.classList.toggle('active', idx === i));
     dotEls.forEach((el, idx) => el.classList.toggle('active', idx === i));
+    if (captionEl) captionEl.textContent = slides[i].caption || '';
   }
   dotEls.forEach(el => el.addEventListener('click', () => showSlide(Number(el.dataset.i))));
   if (slides.length > 1) {
