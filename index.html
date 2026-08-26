@@ -10,6 +10,7 @@
   :root {
     --bg: #0A0A0A; --bg-2: #050505; --ink: #F2F0EC; --ink-soft: #A8A4A0;
     --line: #1E1C1C; --magenta: #FF2A9D; --cyan: #4CE0E8;
+    --hero-photo-position: 50% 15%;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -38,10 +39,9 @@
   .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
 
   .hero-photo { position: relative; overflow: hidden; }
-  .hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: contrast(1.04) brightness(0.98); }
-  .photo-tint { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(255,42,157,0.4), rgba(76,224,232,0.22)); mix-blend-mode: color; pointer-events: none; }
-  .photo-fade { position: absolute; inset: 0; background: linear-gradient(90deg, #14061F 0%, rgba(20,6,31,0) 42%); }
-
+.hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: var(--hero-photo-position); display: block; filter: contrast(1.04) brightness(0.98); }
+.photo-tint { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(255,42,157,0.4), rgba(76,224,232,0.22)); mix-blend-mode: color; pointer-events: none; }
+.photo-fade { position: absolute; inset: 0; background: linear-gradient(90deg, #14061F 0%, rgba(20,6,31,0) 42%); }
   .genres { padding: 44px 0; background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .genre-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
   .genre-tag { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.05em; padding: 7px 16px; border-radius: 20px; border: 1px solid #2a2828; color: var(--ink-soft); }
