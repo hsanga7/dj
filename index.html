@@ -10,10 +10,7 @@
   :root {
     --bg: #0A0A0A; --bg-2: #050505; --ink: #F2F0EC; --ink-soft: #A8A4A0;
     --line: #1E1C1C; --magenta: #FF2A9D; --cyan: #4CE0E8;
-    /* Adjust this to reframe the hero photo's crop.
-       First value = horizontal (0%=left edge, 50%=center, 100%=right edge)
-       Second value = vertical (0%=top edge, 50%=center, 100%=bottom edge) */
-    --hero-photo-position:100% 40%;
+    --hero-photo-position: 100% 40%;
     --hero-height: clamp(520px, 90vh, 800px);
     --hero-photo-width: minmax(600px, 800px);
   }
@@ -130,24 +127,17 @@
 </head>
 <body>
 
-<!--
-  ============================================================
-  EDIT EVERYTHING HERE. This is the only place you should need
-  to touch to change any text, links, dates, or genres on the
-  page. Nothing below this block should need editing.
-  ============================================================
--->
 <script>
   const CONTENT = {
     pageTitle: "DJ Astro | Bookings",
     brand: "DJ ASTRO",
 
-    nav: {  gallery: "Gallery", reviews: "Reviews", contact: "Contact" },
+    nav: { gallery: "Gallery", reviews: "Reviews", contact: "Contact" },
 
     hero: {
       eyebrow: "DC / MD — BOOKINGS OPEN",
       headline: "DJ ASTRO",
-      sub: "DC/MD's premium vibe-setter  Amapiano to Dancehall and everywhere between, built to keep the room moving.",
+      sub: "DC/MD's premium vibe-setter — Amapiano to Dancehall and everywhere between, built to keep the room moving.",
       bookBtnLabel: "Book Astro",
       galleryBtnLabel: "View gallery",
       photo: "assets/astro-hero.jpg"
@@ -157,23 +147,17 @@
 
     bio: {
       kicker: "ABOUT",
-      text: "Born and raised in the best parts of East Africa 🇹🇿, and grew up on the dancefloor. A certified groovist turned to Dj. The aim is leave you feeling satisfied and eletaed. Every set built built to elevate your experience",
+      text: "Born and raised in the best parts of East Africa 🇹🇿, and grew up on the dancefloor. A certified groovist turned to DJ. The aim is to leave you feeling satisfied and elevated. Every set is built to elevate your experience."
     },
 
-    // Add a gig any time — date, venue, city, and a tag like "Tickets", "RSVP", or "Sold out".
-    // Leave the list empty ( [] ) to show the "new dates dropping soon" message instead.
     dates: {
       kicker: "UPCOMING DATES",
       emptyMessage: "New dates dropping soon — check back or follow on Instagram.",
       list: [
-        // { date: "09.12", venue: "Flash", city: "Washington, DC", tag: "Tickets" },
-        // { date: "09.27", venue: "Sub Rosa", city: "Baltimore, MD", tag: "RSVP" },
+
       ]
     },
 
-    // Add more photos here any time to make the slideshow richer — it cycles
-    // through whatever's in this list automatically. With just one photo it
-    // simply displays as a static frame (nothing breaks).
     galleryTeaser: {
       kicker: "FROM THE BOOTH",
       photos: [
@@ -186,9 +170,6 @@
       viewGalleryLabel: "View full gallery →"
     },
 
-    // Add a review any time — quote, name, and role (event, venue, or "Bride", etc).
-    // These scroll slowly on the home page. Add more/longer ones on the Reviews page
-    // (dj-site/reviews/index.html) any time — that page isn't limited to this list.
     testimonials: {
       kicker: "WHAT PEOPLE SAY",
       heading: "Booked once, booked again.",
@@ -387,7 +368,6 @@
       <div class="review-role">${r.role}</div>
     </div>
   `;
-  // Duplicate the list so the scroll loop has no visible seam.
   const doubledReviews = [...CONTENT.testimonials.list, ...CONTENT.testimonials.list];
   $('marquee-track').innerHTML = doubledReviews.map(reviewCard).join('');
 
