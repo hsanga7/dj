@@ -90,17 +90,15 @@
   .reviews-viewall { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--cyan); text-decoration: none; white-space: nowrap; padding-bottom: 6px; }
   .reviews-viewall:hover { text-decoration: underline; }
 
-  .marquee { overflow: hidden; margin-top: 20px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
-  .marquee-track { display: flex; gap: 16px; width: max-content; animation: marquee-scroll 48s linear infinite; }
-  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .marquee { overflow-x: auto; overflow-y: hidden; margin-top: 20px; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+  .marquee::-webkit-scrollbar { display: none; }
+  .marquee-track { display: flex; gap: 16px; width: max-content; }
   .review-card { flex: 0 0 320px; background: var(--bg-2); border: 1px solid var(--line); border-radius: 8px; padding: 22px; }
   .review-card .quote { font-size: 14px; color: #d8d5d1; line-height: 1.6; margin-bottom: 16px; }
   .review-card .quote::before { content: '“'; color: var(--cyan); }
   .review-card .quote::after { content: '”'; color: var(--cyan); }
   .review-name { font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 500; }
   .review-role { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
-  @keyframes marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
 
   .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
   .contact-heading { font-family: 'Unbounded', sans-serif; font-size: 26px; font-weight: 700; max-width: 340px; line-height: 1.2; }
@@ -116,6 +114,7 @@
   footer p { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); }
 
   @media (max-width: 760px) {
+    .hero { height: auto; }
     .hero-inner { grid-template-columns: 1fr; }
     .hero-photo { height: 320px; order: -1; }
     .hero-text { padding: 40px 24px; }
@@ -124,7 +123,6 @@
     .date-tag { grid-column: 2; justify-self: start; margin-top: 6px; }
     .overview-grid { grid-template-columns: 1fr; gap: 44px; }
     .gallery-slideshow { aspect-ratio: 4/3; min-height: 0; }
-    .hero { height: auto; }
   }
 </style>
 </head>
@@ -194,15 +192,15 @@
       heading: "Booked once, booked again.",
       viewAllLabel: "Read all reviews →",
       list: [
-  { quote: "Amazing DJ ...loved having him. Booking you for future gigs for sure!!!", name: "Sabina", role: "Host, DC" },
-  { quote: "10s across the board.... The energy in the room was amazing and people never stopped dancing.", name: "Sandia", role: "Host, DC" },
-  { quote: "Music was so good I couldn't even sit down to eat.... I had to be on that dance floor.", name: "Lela H", role: "Guest, Laurel" },
-  { quote: "The DJ was fireee.", name: "Ashley", role: "Guest, DC" },
-  { quote: "Who's the DJ?..... Absolute bangerz.", name: "A couple of friends", role: "Guests, DC" },
-  { quote: "Yes.", name: "Oscar", role: "Host, MD" }
-]
+        { quote: "Amazing DJ ...loved having him. Booking you for future gigs for sure!!!", name: "Sabina", role: "Host, DC" },
+        { quote: "10s across the board.... The energy in the room was amazing and people never stopped dancing.", name: "Sandia", role: "Host, DC" },
+        { quote: "Music was so good I couldn't even sit down to eat.... I had to be on that dance floor.", name: "Lela H", role: "Guest, Laurel" },
+        { quote: "The DJ was fireee.", name: "Ashley", role: "Guest, DC" },
+        { quote: "Who's the DJ?..... Absolute bangerz.", name: "A couple of friends", role: "Guests, DC" },
+        { quote: "Yes.", name: "Oscar", role: "Host, MD" }
+      ]
     },
-    
+
     contact: {
       kicker: "BOOK / GET IN TOUCH",
       heading: "Let's put Astro on your lineup.",
@@ -391,6 +389,23 @@
   // Duplicate the list so the scroll loop has no visible seam.
   const doubledReviews = [...CONTENT.testimonials.list, ...CONTENT.testimonials.list];
   $('marquee-track').innerHTML = doubledReviews.map(reviewCard).join('');
+
+  const marqueeEl = $('marquee-wrap');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let autoScroll = !reducedMotion;
+  function tickMarquee() {
+    if (autoScroll && marqueeEl) {
+      marqueeEl.scrollLeft += 0.5;
+      const half = marqueeEl.scrollWidth / 2;
+      if (marqueeEl.scrollLeft >= half) marqueeEl.scrollLeft -= half;
+    }
+    requestAnimationFrame(tickMarquee);
+  }
+  requestAnimationFrame(tickMarquee);
+  ['touchstart', 'mousedown'].forEach(evt => marqueeEl.addEventListener(evt, () => { autoScroll = false; }));
+  ['touchend', 'mouseup'].forEach(evt => marqueeEl.addEventListener(evt, () => { setTimeout(() => { autoScroll = !reducedMotion; }, 1500); }));
+  marqueeEl.addEventListener('mouseenter', () => { autoScroll = false; });
+  marqueeEl.addEventListener('mouseleave', () => { autoScroll = !reducedMotion; });
 
   $('contact-kicker').textContent = CONTENT.contact.kicker;
   $('contact-heading').textContent = CONTENT.contact.heading;
