@@ -43,6 +43,8 @@
   .lightbox-close { position: absolute; top: 24px; right: 28px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink-soft); background: none; border: 1px solid #2a2828; border-radius: 20px; padding: 8px 16px; cursor: pointer; }
   .lightbox-close:hover { color: var(--ink); border-color: var(--cyan); }
   .lightbox-cap { position: absolute; bottom: 28px; left: 0; right: 0; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); }
+  .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); background: none; border: 1px solid #2a2828; border-radius: 50%; width: 44px; height: 44px; color: var(--ink-soft); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .lightbox-nav:hover { color: var(--ink); border-color: var(--cyan); }
 
   @media (max-width: 760px) { .grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
@@ -72,27 +74,26 @@
     heading: "From the booth",
     emptySlots: 0,
     photos: [
-
-  { src: "../assets/active-dancefloor.jpg", caption: "Active dancefloor" },
-  { src: "../assets/at-work.jpg", caption: "At work" },
-  { src: "../assets/dancefloor-ii.jpg", caption: "Dancefloor II" },
-  { src: "../assets/dancefloor-shenanigans.jpg", caption: "Dancefloor shenanigans" },
-  { src: "../assets/dancefloor.jpg", caption: "Dancefloor" },
-  { src: "../assets/get-it.jpg", caption: "Get it" },
-  { src: "../assets/get-low.jpg", caption: "Get low" },
-  { src: "../assets/getting-active.jpg", caption: "Getting active" },
-  { src: "../assets/guest-appreciation.jpg", caption: "Guest appreciation" },
-  { src: "../assets/happy-hosts.jpg", caption: "Happy hosts" },
-  { src: "../assets/in-the-zone-two.jpg", caption: "In the zone II" },
-  { src: "../assets/in-the-zone.jpg", caption: "In the zone" },
-  { src: "../assets/lets-go.jpg", caption: "Let's go" },
-  { src: "../assets/locked-in.jpg", caption: "Locked in" },
-  { src: "../assets/party-vibes.jpg", caption: "Party vibes" },
-  { src: "../assets/sing-along.jpg", caption: "Sing along" },
-  { src: "../assets/smiles-all-around.jpg", caption: "Smiles all around" },
-  { src: "../assets/very-happy-hosts.jpg", caption: "Very happy hosts" },
-  { src: "../assets/vibes.jpg", caption: "Vibes" },
-],
+      { src: "../assets/active-dancefloor.jpg", caption: "Active dancefloor" },
+      { src: "../assets/at-work.jpg", caption: "At work" },
+      { src: "../assets/dancefloor-ii.jpg", caption: "Dancefloor II" },
+      { src: "../assets/dancefloor-shenanigans.jpg", caption: "Dancefloor shenanigans" },
+      { src: "../assets/dancefloor.jpg", caption: "Dancefloor" },
+      { src: "../assets/get-it.jpg", caption: "Get it" },
+      { src: "../assets/get-low.jpg", caption: "Get low" },
+      { src: "../assets/getting-active.jpg", caption: "Getting active" },
+      { src: "../assets/guest-appreciation.jpg", caption: "Guest appreciation" },
+      { src: "../assets/happy-hosts.jpg", caption: "Happy hosts" },
+      { src: "../assets/in-the-zone-two.jpg", caption: "In the zone II" },
+      { src: "../assets/in-the-zone.jpg", caption: "In the zone" },
+      { src: "../assets/lets-go.jpg", caption: "Let's go" },
+      { src: "../assets/locked-in.jpg", caption: "Locked in" },
+      { src: "../assets/party-vibes.jpg", caption: "Party vibes" },
+      { src: "../assets/sing-along.jpg", caption: "Sing along" },
+      { src: "../assets/smiles-all-around.jpg", caption: "Smiles all around" },
+      { src: "../assets/very-happy-hosts.jpg", caption: "Very happy hosts" },
+      { src: "../assets/vibes.jpg", caption: "Vibes" },
+    ],
   };
 </script>
 
@@ -113,6 +114,8 @@
 
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" id="lightbox-close">Close ✕</button>
+  <button class="lightbox-nav" id="lightbox-prev" style="left: 24px;">‹</button>
+  <button class="lightbox-nav" id="lightbox-next" style="right: 24px;">›</button>
   <img id="lightbox-img" src="" alt="">
   <div class="lightbox-cap" id="lightbox-cap"></div>
 </div>
@@ -136,15 +139,20 @@
   const lightboxImg = $('lightbox-img');
   const lightboxCap = $('lightbox-cap');
 
-  CONTENT.photos.forEach(p => {
+  let currentIndex = 0;
+  function showLightbox(i) {
+    currentIndex = i;
+    const p = CONTENT.photos[i];
+    lightboxImg.src = p.src;
+    lightboxCap.textContent = p.caption || '';
+    lightbox.classList.add('open');
+  }
+
+  CONTENT.photos.forEach((p, i) => {
     const tile = document.createElement('div');
     tile.className = 'tile';
     tile.innerHTML = `<img src="${p.src}" alt="${p.caption || ''}" loading="lazy">${p.caption ? `<div class="cap">${p.caption}</div>` : ''}`;
-    tile.addEventListener('click', () => {
-      lightboxImg.src = p.src;
-      lightboxCap.textContent = p.caption || '';
-      lightbox.classList.add('open');
-    });
+    tile.addEventListener('click', () => showLightbox(i));
     grid.appendChild(tile);
   });
 
@@ -157,7 +165,14 @@
 
   $('lightbox-close').addEventListener('click', () => lightbox.classList.remove('open'));
   lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.remove('open'); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') lightbox.classList.remove('open'); });
+  $('lightbox-prev').addEventListener('click', () => showLightbox((currentIndex - 1 + CONTENT.photos.length) % CONTENT.photos.length));
+  $('lightbox-next').addEventListener('click', () => showLightbox((currentIndex + 1) % CONTENT.photos.length));
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') lightbox.classList.remove('open');
+    if (e.key === 'ArrowLeft') showLightbox((currentIndex - 1 + CONTENT.photos.length) % CONTENT.photos.length);
+    if (e.key === 'ArrowRight') showLightbox((currentIndex + 1) % CONTENT.photos.length);
+  });
 </script>
 
 </body>
