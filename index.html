@@ -14,6 +14,8 @@
        First value = horizontal (0%=left edge, 50%=center, 100%=right edge)
        Second value = vertical (0%=top edge, 50%=center, 100%=bottom edge) */
     --hero-photo-position: 50% 15%;
+    --hero-height: clamp(380px, 58vh, 520px);
+    --hero-photo-width: minmax(300px, 460px);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -29,8 +31,8 @@
   .nav-links a { text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--ink-soft); }
   .nav-links a:hover { color: var(--ink); }
 
-  .hero { position: relative; height: clamp(380px, 58vh, 520px); overflow: hidden; background: linear-gradient(160deg, #14061F 0%, #0A0A0A 70%); }
-  .hero-inner { position: relative; max-width: 1200px; margin: 0 auto; height: 100%; display: grid; grid-template-columns: 1fr minmax(300px, 460px); }
+  .hero { position: relative; height: var(--hero-height); overflow: hidden; background: linear-gradient(160deg, #14061F 0%, #0A0A0A 70%); }
+  .hero-inner { position: relative; max-width: 1200px; margin: 0 auto; height: 100%; display: grid; grid-template-columns: 1fr var(--hero-photo-width); }
   .scroll-cue { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 4; opacity: 0.7; animation: scroll-bounce 2s ease-in-out infinite; transition: opacity 0.3s ease; }
   .scroll-cue svg { width: 22px; height: 22px; stroke: var(--ink); }
   @keyframes scroll-bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(7px); } }
