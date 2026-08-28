@@ -114,6 +114,23 @@
   }
   .custom-form input:focus, .custom-form textarea:focus { outline: none; border-color: var(--cyan); }
   .custom-form textarea { resize: vertical; min-height: 90px; }
+  .date-picker { position: relative; }
+  .date-picker input[type="text"] { cursor: pointer; }
+  .date-picker-panel {
+    display: none; position: absolute; top: calc(100% + 8px); left: 0; z-index: 20;
+    background: var(--bg-2); border: 1px solid var(--line); border-radius: 8px; padding: 14px; width: 280px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  }
+  .date-picker-panel.open { display: block; }
+  .dp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink); }
+  .dp-header button { background: none; border: 1px solid var(--line); color: var(--ink-soft); border-radius: 4px; width: 26px; height: 26px; cursor: pointer; }
+  .dp-header button:hover { color: var(--ink); border-color: var(--cyan); }
+  .dp-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .dp-daylabel { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink-soft); text-align: center; padding: 4px 0; }
+  .dp-day { background: none; border: none; color: var(--ink); font-size: 13px; padding: 6px 0; border-radius: 4px; cursor: pointer; text-align: center; }
+  .dp-day:hover { background: var(--line); }
+  .dp-day.selected { background: linear-gradient(90deg, var(--magenta), var(--cyan)); color: #0A0A0A; font-weight: 600; }
+  .dp-day.empty { visibility: hidden; cursor: default; }
   .custom-form button { align-self: flex-start; border: none; cursor: pointer; }
   .form-success { display: none; text-align: center; padding: 48px 20px; }
   .form-success.show { display: block; }
@@ -307,8 +324,19 @@
             <input type="text" id="bf-venue" name="venue" required>
           </div>
           <div>
-            <label for="bf-date">Date</label>
-            <input type="date" id="bf-date" name="date" required>
+            <label for="bf-date-display">Date</label>
+            <div class="date-picker" id="date-picker">
+              <input type="text" id="bf-date-display" placeholder="Select a date" readonly required autocomplete="off">
+              <input type="hidden" id="bf-date" name="date">
+              <div class="date-picker-panel" id="date-picker-panel">
+                <div class="dp-header">
+                  <button type="button" id="dp-prev">‹</button>
+                  <span id="dp-month-label"></span>
+                  <button type="button" id="dp-next">›</button>
+                </div>
+                <div class="dp-grid" id="dp-grid"></div>
+              </div>
+            </div>
           </div>
           <div>
             <label for="bf-message">Tell me more about this event</label>
@@ -433,6 +461,60 @@
     <span class="contact-soon"><svg viewBox="0 0 24 24" width="1em" height="1em"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"/><path fill="#fff" d="M10 8.5v7l6-3.5z"/></svg>${CONTENT.contact.youtubeLabel}</span>
   `;
   $('gform-fallback-link').href = CONTENT.contact.googleFormLink;
+
+  let dpDate = new Date();
+  let selectedDate = null;
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  function renderCalendar() {
+    const grid = $('dp-grid');
+    const label = $('dp-month-label');
+    const year = dpDate.getFullYear();
+    const month = dpDate.getMonth();
+    label.textContent = `${monthNames[month]} ${year}`;
+    grid.innerHTML = '';
+    ['S','M','T','W','T','F','S'].forEach(d => {
+      const el = document.createElement('div');
+      el.className = 'dp-daylabel';
+      el.textContent = d;
+      grid.appendChild(el);
+    });
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    for (let i = 0; i < firstDay; i++) {
+      const el = document.createElement('div');
+      el.className = 'dp-day empty';
+      grid.appendChild(el);
+    }
+    for (let d = 1; d <= daysInMonth; d++) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'dp-day';
+      btn.textContent = d;
+      const iso = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      if (selectedDate === iso) btn.classList.add('selected');
+      btn.addEventListener('click', () => {
+        selectedDate = iso;
+        $('bf-date').value = iso;
+        $('bf-date-display').value = `${monthNames[month]} ${d}, ${year}`;
+        $('date-picker-panel').classList.remove('open');
+        renderCalendar();
+      });
+      grid.appendChild(btn);
+    }
+  }
+  $('bf-date-display').addEventListener('click', () => {
+    $('date-picker-panel').classList.toggle('open');
+  });
+  $('dp-prev').addEventListener('click', () => { dpDate.setMonth(dpDate.getMonth() - 1); renderCalendar(); });
+  $('dp-next').addEventListener('click', () => { dpDate.setMonth(dpDate.getMonth() + 1); renderCalendar(); });
+  document.addEventListener('click', (e) => {
+    const picker = $('date-picker');
+    if (picker && !picker.contains(e.target)) {
+      $('date-picker-panel').classList.remove('open');
+    }
+  });
+  renderCalendar();
 
   document.getElementById('booking-form').addEventListener('submit', function (e) {
     e.preventDefault();
