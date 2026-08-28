@@ -10,9 +10,9 @@
   :root {
     --bg: #0A0A0A; --bg-2: #050505; --ink: #F2F0EC; --ink-soft: #A8A4A0;
     --line: #1E1C1C; --magenta: #FF2A9D; --cyan: #4CE0E8;
-    --hero-photo-position: 100% 5%;
-    --hero-height: clamp(520px, 90vh, 800px);
-    --hero-photo-width: minmax(420px, 600px);
+    --hero-photo-position: 100% 40%;
+    --hero-height: clamp(420px, 68vh, 620px);
+    --hero-photo-width: minmax(600px, 800px);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -22,21 +22,21 @@
   .neon-text { background: linear-gradient(90deg, var(--magenta), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
   .topbar { position: sticky; top: 0; z-index: 50; background: rgba(10,10,10,0.85); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
-  .topbar-inner { max-width: 1400px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
-  .brand { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.02em; text-decoration: none; }
+  .topbar-inner { padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: 0.02em; text-decoration: none; }
   .nav-links { display: flex; gap: 24px; }
   .nav-links a { text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--ink-soft); }
   .nav-links a:hover { color: var(--ink); }
 
   .hero { position: relative; height: var(--hero-height); overflow: hidden; background: linear-gradient(160deg, #14061F 0%, #0A0A0A 70%); }
-  .hero-inner { position: relative; max-width: 1200px; margin: 0 auto; height: 100%; display: grid; grid-template-columns: 1fr var(--hero-photo-width); }
+  .hero-inner { position: relative; height: 100%; display: grid; grid-template-columns: 1fr var(--hero-photo-width); }
   .scroll-cue { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 4; opacity: 0.7; animation: scroll-bounce 2s ease-in-out infinite; transition: opacity 0.3s ease; }
   .scroll-cue svg { width: 22px; height: 22px; stroke: var(--ink); }
   @keyframes scroll-bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(7px); } }
-  .hero-text { padding: 64px 40px; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 3; }
+  .hero-text { padding: 64px 56px 72px; display: flex; flex-direction: column; justify-content: flex-end; position: relative; z-index: 3; }
   .grid-floor { position: absolute; bottom: -15%; left: -15%; width: 100%; height: 65%; background-image: linear-gradient(rgba(255,42,157,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(255,42,157,0.22) 1px, transparent 1px); background-size: 36px 22px; transform: perspective(220px) rotateX(55deg); transform-origin: bottom left; z-index: 1; }
   .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: var(--magenta); margin-bottom: 18px; position: relative; z-index: 2; }
-  .hero-text h1 { font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: clamp(44px, 7vw, 68px); line-height: 0.92; margin-bottom: 20px; position: relative; z-index: 2; text-shadow: 0 0 40px rgba(255,42,157,0.28); }
+  .hero-text h1 { font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: clamp(38px, 5.5vw, 56px); line-height: 0.95; margin-bottom: 20px; position: relative; z-index: 2; text-shadow: 0 0 40px rgba(255,42,157,0.28); }
   .hero-sub { font-size: 15px; color: var(--ink-soft); max-width: 380px; margin-bottom: 26px; position: relative; z-index: 2; }
   .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; position: relative; z-index: 2; }
   .btn { display: inline-flex; align-items: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; padding: 12px 22px; border-radius: 4px; text-decoration: none; }
@@ -104,10 +104,13 @@
   .contact-links { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
   .contact-links a { text-decoration: none; display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: var(--ink-soft); }
   .contact-links svg { width: 1.05em; height: 1.05em; flex-shrink: 0; }
-  .contact-links .contact-soon { display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: var(--ink-soft); opacity: 0.5; }
   .contact-links a:hover { color: var(--cyan); }
   .form-note { font-size: 12px; color: var(--ink-soft); margin-top: 10px; }
-  .gform-card { background: #fff; border-radius: 8px; overflow: hidden; max-height: 500px; overflow-y: auto; }
+  .gform-card {
+    background-image: linear-gradient(#fff, #fff), linear-gradient(120deg, var(--magenta), var(--cyan));
+    background-origin: border-box; background-clip: padding-box, border-box;
+    border: 2px solid transparent; border-radius: 10px; overflow: hidden; max-height: 500px; overflow-y: auto;
+  }
   .gform-card iframe { display: block; }
 
   footer { padding: 40px 0 60px; border-top: 1px solid var(--line); text-align: center; }
@@ -138,7 +141,7 @@
     hero: {
       eyebrow: "DC / MD — BOOKINGS OPEN",
       headline: "DJ ASTRO",
-      sub: "DC/MD's premium vibe-setter. From Amapiano to Dancehall and everywhere between, built to keep the room moving.",
+      sub: "DC/MD's premium vibe-setter — Amapiano to Dancehall and everywhere between, built to keep the room moving.",
       bookBtnLabel: "Book Astro",
       galleryBtnLabel: "View gallery",
       photo: "assets/astro-hero.jpg"
@@ -195,7 +198,6 @@
       instagramLabel: "@dj._astro",
       tiktokUrl: "https://www.tiktok.com/@dj._astro?_r=1&_t=ZP-99D7sa2HZlO",
       tiktokLabel: "@dj._astro",
-      youtubeLabel: "Coming soon",
       googleFormEmbedUrl: "https://docs.google.com/forms/d/e/1FAIpQLScdZ-NoKV4HaSZsHsaIPs63mTbhQen1yV0PPXKHb-RgtOHs0g/viewform?embedded=true",
       googleFormLink: "https://forms.gle/K6JGm9FWP1tkidq9A"
     },
@@ -397,7 +399,6 @@
     <a href="tel:${CONTENT.contact.phoneHref}"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.2 2.2z"/></svg>${CONTENT.contact.phone}</a>
     <a href="${CONTENT.contact.instagramUrl}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="1em" height="1em"><defs><linearGradient id="ig-grad" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#FEDA75"/><stop offset="25%" stop-color="#FA7E1E"/><stop offset="55%" stop-color="#D62976"/><stop offset="80%" stop-color="#962FBF"/><stop offset="100%" stop-color="#4F5BD5"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="6" fill="url(#ig-grad)"/><rect x="6.7" y="6.7" width="10.6" height="10.6" rx="3.3" fill="none" stroke="#fff" stroke-width="1.6"/><circle cx="15.6" cy="8.4" r="1.05" fill="#fff"/></svg>${CONTENT.contact.instagramLabel}</a>
     <a href="${CONTENT.contact.tiktokUrl}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="1em" height="1em"><path transform="translate(-0.6,0.6)" fill="#25F4EE" d="M15 3.2c.5 2.3 2 3.9 4.4 4.2v2.8c-1.6 0-3.1-.4-4.4-1.3v6.7a5.3 5.3 0 1 1-4.6-5.2v2.8a2.5 2.5 0 1 0 2 2.4V3.2H15z"/><path transform="translate(0.6,-0.6)" fill="#FE2C55" d="M15 3.2c.5 2.3 2 3.9 4.4 4.2v2.8c-1.6 0-3.1-.4-4.4-1.3v6.7a5.3 5.3 0 1 1-4.6-5.2v2.8a2.5 2.5 0 1 0 2 2.4V3.2H15z"/><path fill="#000" d="M15 3.2c.5 2.3 2 3.9 4.4 4.2v2.8c-1.6 0-3.1-.4-4.4-1.3v6.7a5.3 5.3 0 1 1-4.6-5.2v2.8a2.5 2.5 0 1 0 2 2.4V3.2H15z"/></svg>${CONTENT.contact.tiktokLabel}</a>
-    <span class="contact-soon"><svg viewBox="0 0 24 24" width="1em" height="1em"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"/><path fill="#fff" d="M10 8.5v7l6-3.5z"/></svg>${CONTENT.contact.youtubeLabel}</span>
   `;
   $('gform-iframe').src = CONTENT.contact.googleFormEmbedUrl;
   $('gform-fallback-link').href = CONTENT.contact.googleFormLink;
