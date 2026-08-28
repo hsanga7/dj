@@ -104,6 +104,7 @@
   .contact-links { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
   .contact-links a { text-decoration: none; display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: var(--ink-soft); }
   .contact-links svg { width: 1.05em; height: 1.05em; flex-shrink: 0; }
+  .contact-links .contact-soon { display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: var(--ink-soft); opacity: 0.5; }
   .contact-links a:hover { color: var(--cyan); }
   .form-note { font-size: 12px; color: var(--ink-soft); margin-top: 10px; }
   .gform-card { background: #fff; border-radius: 8px; overflow: hidden; max-height: 500px; overflow-y: auto; }
@@ -194,6 +195,7 @@
       instagramLabel: "@dj._astro",
       tiktokUrl: "https://www.tiktok.com/@dj._astro?_r=1&_t=ZP-99D7sa2HZlO",
       tiktokLabel: "@dj._astro",
+      youtubeLabel: "Coming soon",
       googleFormEmbedUrl: "https://docs.google.com/forms/d/e/1FAIpQLScdZ-NoKV4HaSZsHsaIPs63mTbhQen1yV0PPXKHb-RgtOHs0g/viewform?embedded=true",
       googleFormLink: "https://forms.gle/K6JGm9FWP1tkidq9A"
     },
@@ -395,6 +397,7 @@
     <a href="tel:${CONTENT.contact.phoneHref}"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.2 2.2z"/></svg>${CONTENT.contact.phone}</a>
     <a href="${CONTENT.contact.instagramUrl}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="1em" height="1em"><defs><linearGradient id="ig-grad" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#FEDA75"/><stop offset="25%" stop-color="#FA7E1E"/><stop offset="55%" stop-color="#D62976"/><stop offset="80%" stop-color="#962FBF"/><stop offset="100%" stop-color="#4F5BD5"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="6" fill="url(#ig-grad)"/><rect x="6.7" y="6.7" width="10.6" height="10.6" rx="3.3" fill="none" stroke="#fff" stroke-width="1.6"/><circle cx="15.6" cy="8.4" r="1.05" fill="#fff"/></svg>${CONTENT.contact.instagramLabel}</a>
     <a href="${CONTENT.contact.tiktokUrl}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="1em" height="1em"><path transform="translate(-0.6,0.6)" fill="#25F4EE" d="M15 3.2c.5 2.3 2 3.9 4.4 4.2v2.8c-1.6 0-3.1-.4-4.4-1.3v6.7a5.3 5.3 0 1 1-4.6-5.2v2.8a2.5 2.5 0 1 0 2 2.4V3.2H15z"/><path transform="translate(0.6,-0.6)" fill="#FE2C55" d="M15 3.2c.5 2.3 2 3.9 4.4 4.2v2.8c-1.6 0-3.1-.4-4.4-1.3v6.7a5.3 5.3 0 1 1-4.6-5.2v2.8a2.5 2.5 0 1 0 2 2.4V3.2H15z"/><path fill="#000" d="M15 3.2c.5 2.3 2 3.9 4.4 4.2v2.8c-1.6 0-3.1-.4-4.4-1.3v6.7a5.3 5.3 0 1 1-4.6-5.2v2.8a2.5 2.5 0 1 0 2 2.4V3.2H15z"/></svg>${CONTENT.contact.tiktokLabel}</a>
+    <span class="contact-soon"><svg viewBox="0 0 24 24" width="1em" height="1em"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"/><path fill="#fff" d="M10 8.5v7l6-3.5z"/></svg>${CONTENT.contact.youtubeLabel}</span>
   `;
   $('gform-iframe').src = CONTENT.contact.googleFormEmbedUrl;
   $('gform-fallback-link').href = CONTENT.contact.googleFormLink;
