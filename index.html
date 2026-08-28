@@ -5,19 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="page-title">DJ Astro — DC/MD</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="icon" type="image/png" href="favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0A0A0A; --bg-2: #050505; --ink: #F2F0EC; --ink-soft: #A8A4A0;
     --line: #1E1C1C; --magenta: #FF2A9D; --cyan: #4CE0E8;
     --hero-photo-position: 30% 5%;
-    --hero-height: clamp(420px, 80vh, 900px);
+    --hero-height: clamp(420px, 80vh, 1200px);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
-  .container { max-width: 1500px; margin: 0 auto; padding: 0 24px; }
+  .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
   a { color: inherit; }
   .neon-text { background: linear-gradient(90deg, var(--magenta), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
@@ -107,13 +106,19 @@
   .contact-links .contact-soon { display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: var(--ink-soft); opacity: 0.5; }
   .contact-links a:hover { color: var(--cyan); }
   .form-note { font-size: 12px; color: var(--ink-soft); margin-top: 10px; }
-  .gform-card {
-    background-image: linear-gradient(#fff, #fff), linear-gradient(120deg, var(--magenta), var(--cyan));
-    background-origin: border-box; background-clip: padding-box, border-box;
-    border: 2px solid transparent; border-radius: 10px; overflow: hidden; max-height: 500px; overflow-y: auto;
+  .custom-form { display: flex; flex-direction: column; gap: 14px; }
+  .custom-form label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: var(--ink-soft); margin-bottom: 6px; display: block; }
+  .custom-form input, .custom-form textarea {
+    width: 100%; background: var(--bg-2); border: 1px solid var(--line); border-radius: 6px;
+    padding: 11px 13px; color: var(--ink); font-family: 'Inter', sans-serif; font-size: 14px;
   }
-  .gform-card iframe { display: block; }
-
+  .custom-form input:focus, .custom-form textarea:focus { outline: none; border-color: var(--cyan); }
+  .custom-form textarea { resize: vertical; min-height: 90px; }
+  .custom-form button { align-self: flex-start; border: none; cursor: pointer; }
+  .form-success { display: none; text-align: center; padding: 48px 20px; }
+  .form-success.show { display: block; }
+  .form-success h3 { font-family: 'Unbounded', sans-serif; font-size: 22px; margin-bottom: 8px; background: linear-gradient(90deg, var(--magenta), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .form-success p { color: var(--ink-soft); font-size: 14px; }
   footer { padding: 40px 0 60px; border-top: 1px solid var(--line); text-align: center; }
   footer p { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); }
 
@@ -288,10 +293,34 @@
         <div class="contact-links" id="contact-links"></div>
       </div>
       <div>
-        <div class="gform-card">
-          <iframe id="gform-iframe" src="" width="100%" height="820" frameborder="0" marginheight="0" marginwidth="0" title="Booking form">Loading…</iframe>
+        <form class="custom-form" id="booking-form">
+          <div>
+            <label for="bf-name">Your Name</label>
+            <input type="text" id="bf-name" name="name" required>
+          </div>
+          <div>
+            <label for="bf-email">Your Email</label>
+            <input type="email" id="bf-email" name="email" required>
+          </div>
+          <div>
+            <label for="bf-venue">Event / Venue</label>
+            <input type="text" id="bf-venue" name="venue" required>
+          </div>
+          <div>
+            <label for="bf-date">Date</label>
+            <input type="date" id="bf-date" name="date" required>
+          </div>
+          <div>
+            <label for="bf-message">Tell me more about this event</label>
+            <textarea id="bf-message" name="message" required></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit">Send booking request</button>
+        </form>
+        <div class="form-success" id="form-success">
+          <h3>Got it!</h3>
+          <p>Thanks for reaching out — Astro will get back to you soon.</p>
         </div>
-        <p class="form-note">Having trouble with the embedded form? <a id="gform-fallback-link" href="#" target="_blank" rel="noopener" style="color: var(--cyan);">Open it in a new tab</a> instead.</p>
+        <p class="form-note">Prefer email? <a id="gform-fallback-link" href="#" target="_blank" rel="noopener" style="color: var(--cyan);">Open the form in a new tab</a> instead.</p>
       </div>
     </div>
   </div>
@@ -403,8 +432,31 @@
     <a href="${CONTENT.contact.tiktokUrl}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="1em" height="1em"><path transform="translate(-0.6,0.6)" fill="#25F4EE" d="M15 3.2c.5 2.3 2 3.9 4.4 4.2v2.8c-1.6 0-3.1-.4-4.4-1.3v6.7a5.3 5.3 0 1 1-4.6-5.2v2.8a2.5 2.5 0 1 0 2 2.4V3.2H15z"/><path transform="translate(0.6,-0.6)" fill="#FE2C55" d="M15 3.2c.5 2.3 2 3.9 4.4 4.2v2.8c-1.6 0-3.1-.4-4.4-1.3v6.7a5.3 5.3 0 1 1-4.6-5.2v2.8a2.5 2.5 0 1 0 2 2.4V3.2H15z"/><path fill="#000" d="M15 3.2c.5 2.3 2 3.9 4.4 4.2v2.8c-1.6 0-3.1-.4-4.4-1.3v6.7a5.3 5.3 0 1 1-4.6-5.2v2.8a2.5 2.5 0 1 0 2 2.4V3.2H15z"/></svg>${CONTENT.contact.tiktokLabel}</a>
     <span class="contact-soon"><svg viewBox="0 0 24 24" width="1em" height="1em"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"/><path fill="#fff" d="M10 8.5v7l6-3.5z"/></svg>${CONTENT.contact.youtubeLabel}</span>
   `;
-  $('gform-iframe').src = CONTENT.contact.googleFormEmbedUrl;
   $('gform-fallback-link').href = CONTENT.contact.googleFormLink;
+
+  document.getElementById('booking-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const fd = new FormData(this);
+    const params = new URLSearchParams();
+    params.append('entry.2027015266', fd.get('name'));
+    params.append('entry.713510422', fd.get('email'));
+    params.append('entry.804328507', fd.get('venue'));
+    params.append('entry.1157117057', fd.get('date'));
+    params.append('entry.1399440336', fd.get('message'));
+
+    fetch('https://docs.google.com/forms/d/e/1FAIpQLScdZ-NoKV4HaSZsHsaIPs63mTbhQen1yV0PPXKHb-RgtOHs0g/formResponse', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params.toString()
+    }).then(() => {
+      this.style.display = 'none';
+      document.getElementById('form-success').classList.add('show');
+    }).catch(() => {
+      this.style.display = 'none';
+      document.getElementById('form-success').classList.add('show');
+    });
+  });
 
   $('footer-text').textContent = CONTENT.footerText;
 
