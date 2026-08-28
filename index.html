@@ -11,7 +11,7 @@
     --bg: #0A0A0A; --bg-2: #050505; --ink: #F2F0EC; --ink-soft: #A8A4A0;
     --line: #1E1C1C; --magenta: #FF2A9D; --cyan: #4CE0E8;
     --hero-photo-position: 100% 5%;
-    --hero-height: clamp(420px, 70vh, 640px);
+    --hero-height: clamp(420px, 72vh, 700px);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -28,7 +28,7 @@
   .nav-links a:hover { color: var(--ink); }
 
   .hero { position: relative; height: var(--hero-height); overflow: hidden; background: linear-gradient(160deg, #14061F 0%, #0A0A0A 70%); }
-  .hero-inner { position: relative; height: 100%; display: grid; grid-template-columns: 1fr auto; }
+  .hero-inner { position: relative; max-width: 1200px; margin: 0 auto; height: 100%; display: grid; grid-template-columns: 1fr auto; }
   .scroll-cue { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 4; opacity: 0.7; animation: scroll-bounce 2s ease-in-out infinite; transition: opacity 0.3s ease; }
   .scroll-cue svg { width: 22px; height: 22px; stroke: var(--ink); }
   @keyframes scroll-bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(7px); } }
