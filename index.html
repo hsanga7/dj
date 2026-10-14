@@ -68,11 +68,12 @@
   .date-venue { font-family: 'Unbounded', sans-serif; font-weight: 500; font-size: 15px; }
   .date-city { font-size: 12.5px; color: var(--ink-soft); margin-top: 3px; }
   .date-tag { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--cyan); border: 1px solid #23504f; padding: 5px 11px; border-radius: 20px; white-space: nowrap; text-decoration: none; }
-a.date-tag:hover { background: rgba(76,224,232,0.12); border-color: var(--cyan); }
-.date-tag.soldout { color: var(--magenta); border-color: rgba(255,42,157,0.45); }
-a.date-tag.soldout:hover { background: rgba(255,42,157,0.12); border-color: var(--magenta); }
-.date-tag.ended { color: #6b6866; border-color: #2a2828; }
-.date-row.is-ended { opacity: 0.55; }.dates-empty { font-size: 14px; color: var(--ink-soft); font-style: italic; padding: 20px 0; }
+  a.date-tag:hover { background: rgba(76,224,232,0.12); border-color: var(--cyan); }
+  .date-tag.soldout { color: var(--magenta); border-color: rgba(255,42,157,0.45); }
+  a.date-tag.soldout:hover { background: rgba(255,42,157,0.12); border-color: var(--magenta); }
+  .date-tag.ended { color: #6b6866; border-color: #2a2828; }
+  .date-row.is-ended { opacity: 0.55; }
+  .dates-empty { font-size: 14px; color: var(--ink-soft); font-style: italic; padding: 20px 0; }
 
   .gallery-slideshow { position: relative; flex: 1; min-height: 260px; border-radius: 8px; overflow: hidden; background: var(--bg-2); margin-top: 8px; }
   .gallery-slideshow img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 1.1s ease; filter: saturate(0.85) contrast(1.05); }
@@ -185,13 +186,11 @@ a.date-tag.soldout:hover { background: rgba(255,42,157,0.12); border-color: var(
       kicker: "UPCOMING DATES",
       emptyMessage: "New dates dropping soon — check back or follow on Instagram.",
       list: [
-        //{ date: "09.12", venue: "Flash", city: "Washington, DC", tag: "Tickets" },
-        { date: "o9/04", venue: "Ivela Lounge", city: "Silver pring, MD", tag: "Ended" },
+        { date: "09/04", venue: "Ivela Lounge", city: "Silver Spring, MD", tag: "Ended" },
         { date: "10/02", venue: "Private Event", city: "Washington, DC", tag: "Ended" },
         { date: "10/10", venue: "BeGees", city: "Baltimore, MD", tag: "Ended" },
-        { date: "10/31", venue: "Ivela Lounge", city: "Silver pring, MD", tag: "Tickets", link "Sherehesheria2026HaloweenParty https://www.eventbrite.com/e/sherehesheria2026haloweenparty-tickets-2002326498458?utm-campaign=social&utm-content=attendeeshare&utm-medium=discovery&utm-term=listing&utm-source=wsa&aff=ebdsshwebmobile"},
+        { date: "10/31", venue: "Ivela Lounge", city: "Silver Spring, MD", tag: "Tickets", link: "https://www.eventbrite.com/e/sherehesheria2026haloweenparty-tickets-2002326498458?utm-campaign=social&utm-content=attendeeshare&utm-medium=discovery&utm-term=listing&utm-source=wsa&aff=ebdsshwebmobile" }
       ]
-
     },
 
     galleryTeaser: {
@@ -393,20 +392,22 @@ a.date-tag.soldout:hover { background: rgba(255,42,157,0.12); border-color: var(
   $('dates-kicker').textContent = CONTENT.dates.kicker;
   const dl = $('dates-list');
   if (CONTENT.dates.list.length === 0) {
+    dl.innerHTML = `<p class="dates-empty">${CONTENT.dates.emptyMessage}</p>`;
+  } else {
     dl.innerHTML = CONTENT.dates.list.map(d => {
-  const t = (d.tag || '').toLowerCase();
-  const cls = t.includes('sold') ? 'soldout' : t.includes('ended') ? 'ended' : '';
-  const tag = d.link
-    ? `<a class="date-tag ${cls}" href="${d.link}" target="_blank" rel="noopener">${d.tag}</a>`
-    : `<div class="date-tag ${cls}">${d.tag}</div>`;
-  return `
-  <div class="date-row${cls === 'ended' ? ' is-ended' : ''}">
-    <div class="date-num">${d.date}</div>
-    <div><div class="date-venue">${d.venue}</div><div class="date-city">${d.city}</div></div>
-    ${tag}
-  </div>
-`;
-}).join('');
+      const t = (d.tag || '').toLowerCase();
+      const cls = t.includes('sold') ? 'soldout' : t.includes('ended') ? 'ended' : '';
+      const tag = d.link
+        ? `<a class="date-tag ${cls}" href="${d.link}" target="_blank" rel="noopener">${d.tag}</a>`
+        : `<div class="date-tag ${cls}">${d.tag}</div>`;
+      return `
+      <div class="date-row${cls === 'ended' ? ' is-ended' : ''}">
+        <div class="date-num">${d.date}</div>
+        <div><div class="date-venue">${d.venue}</div><div class="date-city">${d.city}</div></div>
+        ${tag}
+      </div>
+    `;
+    }).join('');
   }
 
   $('gallery-kicker').textContent = CONTENT.galleryTeaser.kicker;
