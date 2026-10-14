@@ -23,9 +23,16 @@
   .topbar { position: sticky; top: 0; z-index: 50; background: rgba(10,10,10,0.85); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
   .topbar-inner { padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
   .brand { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: 0.02em; text-decoration: none; }
-  .nav-links { display: flex; gap: 24px; }
-  .nav-links a { text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--ink-soft); }
-  .nav-links a:hover { color: var(--ink); }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+.nav-tickets { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500; padding: 8px 14px; border-radius: 4px; text-decoration: none; background: linear-gradient(90deg, var(--magenta), var(--cyan)); color: #0A0A0A; }
+.menu-btn { background: none; border: 1px solid var(--line); border-radius: 4px; width: 36px; height: 34px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; cursor: pointer; }
+.menu-btn span { width: 16px; height: 2px; background: var(--ink); display: block; }
+.menu-btn:hover { border-color: var(--cyan); }
+.nav-links { display: none; position: absolute; top: 100%; right: 32px; flex-direction: column; min-width: 180px; background: var(--bg-2); border: 1px solid var(--line); border-radius: 8px; padding: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+.nav-links.open { display: flex; }
+.nav-links a { text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--ink-soft); padding: 10px 12px; border-radius: 4px; }
+.nav-links a:hover { color: var(--ink); background: var(--line); }
+
 
   .hero { position: relative; height: var(--hero-height); overflow: hidden; background: linear-gradient(160deg, #14061F 0%, #0A0A0A 70%); }
   .hero-inner { position: relative; height: 100%; display: flex; align-items: stretch; justify-content: center; gap: 56px; }
@@ -164,8 +171,7 @@
     pageTitle: "DJ Astro | Bookings",
     brand: "DJ ASTRO",
 
-    nav: { gallery: "Gallery", reviews: "Reviews", contact: "Contact" },
-
+    nav: { tickets: { label: "Tickets", href: "#overview" }, gallery: "Gallery", reviews: "Reviews", contact: "Contact" },
     hero: {
       eyebrow: "DMV's",
       headline: "DJ ASTRO",
@@ -241,9 +247,14 @@
 <div class="topbar">
   <div class="topbar-inner">
     <a class="brand" href="index.html" id="brand"></a>
-    <nav class="nav-links" id="nav-links"></nav>
+    <div class="nav-right">
+      <a class="nav-tickets" id="nav-tickets"></a>
+      <button class="menu-btn" id="menu-btn" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      <nav class="nav-links" id="nav-links"></nav>
+    </div>
   </div>
 </div>
+
 
 <section class="hero">
   <div class="hero-inner">
@@ -369,11 +380,18 @@
 
   document.title = CONTENT.pageTitle;
   $('brand').textContent = CONTENT.brand;
-  $('nav-links').innerHTML = `
-    <a href="gallery/index.html">${CONTENT.nav.gallery}</a>
-    <a href="reviews/index.html">${CONTENT.nav.reviews}</a>
-    <a href="#contact">${CONTENT.nav.contact}</a>
-  `;
+  const tk = CONTENT.nav.tickets;
+$('nav-tickets').textContent = tk.label;
+$('nav-tickets').href = tk.href;
+if (/^http/.test(tk.href)) { $('nav-tickets').target = '_blank'; $('nav-tickets').rel = 'noopener'; }
+$('nav-links').innerHTML = `
+  <a href="gallery/index.html">${CONTENT.nav.gallery}</a>
+  <a href="reviews/index.html">${CONTENT.nav.reviews}</a>
+  <a href="#contact">${CONTENT.nav.contact}</a>
+`;
+const menuBtn = $('menu-btn'), navLinks = $('nav-links');
+menuBtn.addEventListener('click', (e) => { e.stopPropagation(); menuBtn.setAttribute('aria-expanded', navLinks.classList.toggle('open')); });
+document.addEventListener('click', () => { navLinks.classList.remove('open'); menuBtn.setAttribute('aria-expanded', false); });
 
   $('hero-eyebrow').textContent = CONTENT.hero.eyebrow;
   $('hero-headline').textContent = CONTENT.hero.headline;
